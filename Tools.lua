@@ -12,10 +12,6 @@ UI.Button("Stop Cave/Target Bot", function()
       TargetBot.setOn()
    end
   end)
-UI.Separator()
-macro(500, "powerdown", function()
-  say('power down')
-  end)
 ---bUG MAP WASD
 UI.Separator()
 BugMap = {};
