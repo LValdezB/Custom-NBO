@@ -13,7 +13,7 @@ UI.Button("Stop Cave/Target Bot", function()
    end
   end)
 UI.Separator()
-macro(500, "power down", function()
+macro(500, "powerdown", function()
   say('power down')
   end)
 ---bUG MAP WASD
