@@ -13,7 +13,11 @@ UI.Button("Stop Cave/Target Bot", function()
    end
   end)
 UI.Separator()
+macro(500, "power down", function()
+  say('power down')
+  end)
 ---bUG MAP WASD
+UI.Separator()
 BugMap = {};
 
 local availableKeys = {
