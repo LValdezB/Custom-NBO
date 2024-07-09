@@ -937,14 +937,14 @@ end
 
 UI.Separator()
 UI.Button("Add Macro", function(newText)
-    UI.MultilineEditorWindow(storage.ingame_Macro or "", {title="Macro Main editor", description="You can add your custom scrupts here"}, function(text)
-      storage.ingame_Macro = text
+    UI.MultilineEditorWindow(storage.ingame_MainMacro or "", {title="Macro Main editor", description="You can add your custom scrupts here"}, function(text)
+      storage.ingame_MainMacro = text
       reload()
     end)
   end)
   UI.Separator()
   UI.Label('Add Macro')
-  for _, scripts in pairs({storage.ingame_Macro}) do
+  for _, scripts in pairs({storage.ingame_MainMacro}) do
     if type(scripts) == "string" and scripts:len() > 3 then
       local status, result = pcall(function()
         assert(load(scripts, "ingame_maineditor"))()
