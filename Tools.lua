@@ -356,7 +356,201 @@ elseif modules.corelib.g_keyboard.areKeysPressed(config.Jumpkeytwo) then
   say('jump "down"')
 end
 end)
+--------
+local windowUI = setupUI([[
+MainWindow
+  id: main
+  !text: tr('Teleport')
+  size: 200 570
+  scrollable: true
 
+  ScrollablePanel
+    id: TpList
+    anchors.top: parent.top
+    anchors.left: parent.left
+    size: 190 550
+    vertical-scrollbar: mainScroll
+
+    Button
+      !text: tr('Konoha Gakure')
+      anchors.top: parent.top
+      anchors.left: parent.left
+      width: 165
+
+    Button
+      !text: tr('Suna Gakure')
+      anchors.top: prev.bottom
+      anchors.left: parent.left
+      margin-top: 5
+      width: 165
+
+    Button
+      !text: tr('Vila Takumi')
+      anchors.top: prev.bottom
+      anchors.left: parent.left
+      margin-top: 5
+      width: 165
+
+    Button
+      !text: tr('Monte Myoboku')
+      anchors.top: prev.bottom
+      anchors.left: parent.left
+      margin-top: 5
+      width: 165
+
+    Button
+      !text: tr('Forest')
+      anchors.top: prev.bottom
+      anchors.left: parent.left
+      margin-top: 5
+      width: 165
+
+    Button
+      !text: tr('Amegakure no Sato')
+      anchors.top: prev.bottom
+      anchors.left: parent.left
+      margin-top: 5
+      width: 165
+
+    Button
+      !text: tr('Suna Camp')
+      anchors.top: prev.bottom
+      anchors.left: parent.left
+      margin-top: 5
+      width: 165
+
+    Button
+      !text: tr('Iwagakure Island')
+      anchors.top: prev.bottom
+      anchors.left: parent.left
+      margin-top: 5
+      width: 165
+
+    Button
+      !text: tr('Yukigakure')
+      anchors.top: prev.bottom
+      anchors.left: parent.left
+      margin-top: 5
+      width: 165
+
+    Button
+      !text: tr('Iwagakure')
+      anchors.top: prev.bottom
+      anchors.left: parent.left
+      margin-top: 5
+      width: 165
+
+    Button
+      !text: tr('Vale do Fim')
+      anchors.top: prev.bottom
+      anchors.left: parent.left
+      margin-top: 5
+      width: 165
+
+    Button
+      !text: tr('Kumogakure')
+      anchors.top: prev.bottom
+      anchors.left: parent.left
+      margin-top: 5
+      width: 165
+
+    Button
+      !text: tr('Tsuki no Shima')
+      anchors.top: prev.bottom
+      anchors.left: parent.left
+      margin-top: 5
+      width: 165
+
+    Button
+      !text: tr('Templo do Fogo')
+      anchors.top: prev.bottom
+      anchors.left: parent.left
+      margin-top: 5
+      width: 165
+
+    Button
+      !text: tr('Kodai no Shima')
+      anchors.top: prev.bottom
+      anchors.left: parent.left
+      margin-top: 5
+      width: 165
+
+    Button
+      !text: tr('Ilha da Lua')
+      anchors.top: prev.bottom
+      anchors.left: parent.left
+      margin-top: 5
+      width: 165
+
+    Button
+      !text: tr('Ilha Genbu')
+      anchors.top: prev.bottom
+      anchors.left: parent.left
+      margin-top: 5
+      width: 165
+    
+  Button
+    id: closeButton
+    !text: tr('Close')
+    font: cipsoftFont
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    size: 45 21
+    margin-top: 15
+    margin-right: 15
+]], g_ui.getRootWidget());
+windowUI:hide();
+
+TpMinoru = {};
+TpMinoru.macro = macro(100, "Teleport", function() end);
+local MainPanel = windowUI.main;
+local TpList = windowUI.TpList;
+
+TpMinoru.close = function()
+  windowUI:hide()
+  NPC.say('bye');
+end
+
+TpMinoru.show = function()
+    windowUI:show();
+    windowUI:raise();
+    windowUI:focus();
+end
+
+windowUI.closeButton.onClick = function()
+    TpMinoru.close();
+end
+
+TpMinoru.tpToCity = function(city)
+    NPC.say(city);
+    schedule(500, function()
+        NPC.say('yes');
+    end);
+end
+
+
+for i, child in pairs(TpList:getChildren()) do
+    child.onClick = function()
+        TpMinoru.tpToCity(child:getText())
+    end
+end
+
+onTalk(function(name, level, mode, text, channelId, pos)
+  if (TpMinoru.macro.isOff()) then return; end
+  if (name ~= 'Minoru') then return; end              
+  if (mode ~= 51) then return; end
+  if (text:find('Eu posso te levar para')) then 
+      TpMinoru.show();
+  else
+      TpMinoru.close();
+  end
+end);
+
+onKeyDown(function(keys)
+    if (keys == 'Escape' and windowUI:isVisible())  then
+        TpMinoru.close();
+    end
+end);
 
 ---river
 --[[local panelName = "riveradv"
