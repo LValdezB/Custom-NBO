@@ -86,141 +86,78 @@ local function checkPos(x, y)
    checkPos(-5, 0)
   end
  end)
----Bless------
+------
 local windowUI = setupUI([[
-MainWindow
-  id: main
-  !text: tr('Bless')
-  size: 230 310
-  scrollable: true
-    
-  ScrollablePanel
-    id: TpList
-    anchors.top: parent.top
-    anchors.left: parent.left
-    size: 190 225
-    vertical-scrollbar: mainScroll
+Panel
+  id: mainWindow
+  anchors.top: prev.bottom
+  anchors.horizontalCenter: parent.horizontalCenter
+  height: 50
+  margin-top: 50
+  width: 200
+  phantom: true
 
-    Button
-      !text: tr('first bless')
-      anchors.top: parent.top
+  Label
+    id: creatureName
+    text: Name: Beez
+    color: white
+    margin-left: 22
+    anchors.left: creature.left
+    width: 100
+    font: verdana-11px-rounded
+    text-horizontal-auto-resize: true
+  UICreature
+    id: creature
+    size: 27 27
+
+  MiniWindowContents
+    size: 200 200
+    margin: 15 22
+    id: secondaryWindow
+    HealthBar
+      id: healthBar
+      background-color: green
+      height: 12
       anchors.left: parent.left
-      width: 165
+      text: 100/100
+      text-offset: 0 1
+      text-align: center
+      font: verdana-11px-rounded
+      width: 160
+      margin-right: 5
 
-    Button
-      !text: tr('second bless')
-      anchors.top: prev.bottom
-      anchors.left: parent.left
-      margin-top: 5
-      width: 165
+]], modules.game_interface.gameMapPanel);
 
-    Button
-      !text: tr('third bless')
-      anchors.top: prev.bottom
-      anchors.left: parent.left
-      margin-top: 5
-      width: 165
-
-    Button
-      !text: tr('fourth bless')
-      anchors.top: prev.bottom
-      anchors.left: parent.left
-      margin-top: 5
-      width: 165
-
-    Button
-      !text: tr('fifth bless')
-      anchors.top: prev.bottom
-      anchors.left: parent.left
-      margin-top: 5
-      width: 165
-
-  VerticalScrollBar  
-    id: mainScroll
-    anchors.top: parent.top
-    anchors.bottom: parent.bottom
-    anchors.right: parent.right
-    step: 48
-    pixels-scroll: true
-    
-  Button
-    id: closeButton
-    !text: tr('Close')
-    font: cipsoftFont
-    anchors.right: parent.right
-    anchors.bottom: parent.bottom
-    size: 45 21
-    margin-top: 15
-    margin-right: 15
-
-]], g_ui.getRootWidget());
 windowUI:hide();
 
-Bless = {};
-Bless.macro = macro(100, "Bless", function() end);
-local TpList = windowUI.TpList;
+macro(100, function()
+    local target = g_game.getAttackingCreature();
 
-Bless.close = function()
-  windowUI:hide()
-  NPC.say('bye');
-end
-
-Bless.show = function()
-    print("Ta aqui?")
-    windowUI:show();
-    windowUI:raise();
-    windowUI:focus();
-end
-
-windowUI.closeButton.onClick = function()
-    Bless.close();
-end
-
-Bless.ToBless = function(Bless)
-        NPC.say(Bless);
-        schedule(100, function()
-          NPC.say('yes');
-        end);
-      end
-
-
-for i, child in pairs(TpList:getChildren()) do
-    child.onClick = function()
-        Bless.ToBless(child:getText())
-    end
-end
-
-onTalk(function(name, level, mode, text, channelId, pos)
-  if (Bless.macro.isOff()) then return; end
-  if (name ~= 'benefactor') then return; end              
-  if (mode ~= 51) then return; end
-  if (text:find('I can grant you blessings to suffer less in this dangerous ninja world! I offer progressive blesses')) then
-      Bless.show();
-  else
-      Bless.close();
-  end
-end);
-
-onKeyDown(function(keys)
-    if (keys == 'Escape' and windowUI:isVisible())  then
-        Bless.close();
-    end
-end);
----------
-local showhp = macro(20000, "All Creature HP %", function() end)
-onCreatureHealthPercentChange(function(creature, healthPercent)
-    if showhp:isOff() then  return end
-    if creature:isMonster() or creature:isPlayer() and creature:getPosition() and pos() then
-        if getDistanceBetween(pos(), creature:getPosition()) <= 5 then
-            creature:setText(healthPercent .. "%")
-        else
-            creature:clearText()
+    if target and not target:isNpc() then
+        local hp = target:getHealthPercent();
+        if(hp >= 76) then
+            windowUI.secondaryWindow.healthBar:setBackgroundColor("#14fe17")
+        elseif (hp > 50) then
+            windowUI.secondaryWindow.healthBar:setBackgroundColor("#ffff29")
+        elseif (hp > 25) then
+            windowUI.secondaryWindow.healthBar:setBackgroundColor("#ff9b29")
+        elseif (hp > 1) then
+            windowUI.secondaryWindow.healthBar:setBackgroundColor("#ff2929")
         end
+        windowUI.creature:setOutfit(target:getOutfit());
+        windowUI.creatureName:setText(target:getName());
+
+        if (windowUI:isHidden()) then
+            windowUI:show();
+        end
+        windowUI.secondaryWindow.healthBar:setValue(hp, 0, 100);
+        windowUI.secondaryWindow.healthBar:setText(hp .. "/100");
+    elseif (not target and not windowUI:isHidden()) then
+        windowUI:hide();
     end
-end)
-UI.Separator()
-UI.Label("Utility")
-UI.Separator()
+end);
+------
+
 ---auto haste--
 macro(500, "Auto Haste", nil, function()
   if not hasHaste() and storage.autoHasteText:len() > 0 then
@@ -422,7 +359,7 @@ end)
 
 
 ---river
-local panelName = "riveradv"
+--[[local panelName = "riveradv"
   local ui = setupUI([[
 Panel
   height: 19
@@ -444,7 +381,7 @@ Panel
     height: 17
     text: Edit
       
-  ]], parent)
+  ], parent)
   ui:setId(panelName)
 local RiverListWindow = setupUI([[
 MainWindow
@@ -528,7 +465,7 @@ MainWindow
     size: 45 21
     margin-top: 15
     margin-right: 5
-]], g_ui.getRootWidget())
+], g_ui.getRootWidget())
 if not storage[panelName] then
   storage[panelName] = {
   }
@@ -588,7 +525,7 @@ elseif keyriver.areKeysPressed(config.Riverkeytwo) then
   g_game.turn(1) -- leste
   say('suimen hoko no gyo')
 end
-end)
+end)]]
 
 UI.Separator()
 UI.Label("Offensive")
