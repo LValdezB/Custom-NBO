@@ -7,9 +7,8 @@ UI.Button("Add Script", function(newText)
       reload()
     end)
   end)
-  UI.Separator()
-  UI.Label('Added Script')
-
+UI.Separator()
+UI.Label('Added Script')
   for _, scripts in pairs({storage.ingame_hotkeys}) do
     if type(scripts) == "string" and scripts:len() > 3 then
       local status, result = pcall(function()
@@ -20,7 +19,8 @@ UI.Button("Add Script", function(newText)
       end
     end
   end
-  UI.Separator()
+UI.Separator()
+UI.Separator()
 UI.Separator()
 UI.Label("Facility")
 UI.Separator()
