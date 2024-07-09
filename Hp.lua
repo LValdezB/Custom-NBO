@@ -28,7 +28,135 @@ for _, healingInfo in ipairs({storage.healing1, storage.healing2}) do
   end)
 end
 UI.Separator()
+local panelName = "Traineradv"
+  local ui = setupUI([[
+Panel
+  height: 19
 
+  BotSwitch
+    id: titletrainer
+    anchors.top: parent.top
+    anchors.left: parent.left
+    text-align: center
+    width: 130
+    !text: tr('Trainer Spell')
+
+  Button
+    id: editList
+    anchors.top: prev.top
+    anchors.left: prev.right
+    anchors.right: parent.right
+    margin-left: 3
+    height: 17
+    text: Edit
+      
+  ]])
+  ui:setId(panelName)
+local TrainerWindow = setupUI([[
+
+MainWindow
+  !text: tr('Trainer Options')
+  size: 200 180
+  @onEscape: self:hide()
+
+  Label
+    id: SpellName
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    text-align: center
+    text: Spell Name
+    margin-bottom: 3
+
+  BotTextEdit
+    id: trainerSpell
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: SpellName.bottom
+    text-align: center
+    margin-bottom: 5
+
+  Label
+    id: Percent
+    anchors.top: trainerSpell.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    text-align: center
+    margin-top: 5
+
+  HorizontalScrollBar
+    id: maxmanaPercent
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: Percent.bottom
+    margin-top: 5
+    minimum: 1
+    maximum: 100
+    step: 5
+
+  HorizontalSeparator
+    id: separator
+    anchors.right: parent.right
+    anchors.left: parent.left
+    anchors.bottom: closeButton.top
+    margin-bottom: 8    
+
+  Button
+    id: closeButton
+    !text: tr('Close')
+    font: cipsoftFont
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    size: 45 21
+    margin-top: 15
+    margin-right: 5   
+]], g_ui.getRootWidget())
+
+if not storage[panelName] then
+  storage[panelName] = {
+    maxmanaPercent = 50,
+  }
+  end
+local config = storage[panelName]
+  rootWidget = g_ui.getRootWidget()
+  if rootWidget then
+  TrainerWindow:hide()
+
+  ui.titletrainer:setOn(storage.titletrainerEnabled);
+  ui.titletrainer.onClick = function(widget)
+      storage.titletrainerEnabled = not storage.titletrainerEnabled;
+      widget:setOn(storage.titletrainerEnabled);
+  end
+  ui.editList.onClick = function(widget)
+    TrainerWindow:show()
+    TrainerWindow:raise()
+    TrainerWindow:focus()
+  end
+  TrainerWindow.closeButton.onClick = function(widget)
+    TrainerWindow:hide()
+  end
+  local updatePercentText = function()
+    TrainerWindow.Percent:setText("Activates Above " .. config.maxmanaPercent .. "% Mana")  
+  end
+  TrainerWindow.maxmanaPercent:setValue(config.maxmanaPercent)
+  TrainerWindow.maxmanaPercent.onValueChange = function(scroll, value)
+    config.maxmanaPercent = value
+    updatePercentText()
+  end
+  updatePercentText()
+
+  TrainerWindow.trainerSpell.onTextChange = function(widget, text)
+    storage[panelName].trainerSpell = text
+  end
+  TrainerWindow.trainerSpell:setText(config.trainerSpell) 
+end
+macro(100, function()
+  if (not storage.titletrainerEnabled) then
+    elseif (manapercent() >= config.maxmanaPercent) then
+      say(config.trainerSpell)
+    end
+end)
+UI.Separator()
 UI.Label("Potions")
 
 if type(storage.hpitem1) ~= "table" then

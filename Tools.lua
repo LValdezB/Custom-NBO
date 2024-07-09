@@ -511,10 +511,6 @@ MainWindow
 ]], g_ui.getRootWidget())
 if not storage[panelName] then
   storage[panelName] = {
-    Riverkey= 'Up',
-    Riverkeys= 'Down',
-    Riverkeyone='Left',
-    Riverkeytwo='Right',
   }
 end
 
@@ -902,7 +898,17 @@ macro(200, function()
 if (not storage.titletwoEnabled) then
   return
 end
-if (g_game.isAttacking()) then
+if (
+  g_game.isAttacking() and
+  not keyboard.isKeyPressed('F1') and
+  not keyboard.isKeyPressed('F2') and
+  not keyboard.isKeyPressed('F3') and
+  not keyboard.isKeyPressed('F4') and 
+  not keyboard.isKeyPressed('F5') and
+  not keyboard.isKeyPressed('F6') and
+  not keyboard.isKeyPressed('F7') and
+  not keyboard.isKeyPressed('F8')
+) then
 say(storage[panelName].Ctwotwokeyone)
 say(storage[panelName].Ctwotwokeytwo)
 say(storage[panelName].Ctwotwokeythree)
@@ -1199,7 +1205,7 @@ AntiListWindow.AntiAreaText:setText(config.AntiAreaText)
 end
 AntiRed = {
 areaSpell = config.AntiAreaText,
-comboSpells = config.AntiComboText, -- Combo separado por VIRGULA
+comboSpells = config.AntiComboText,
 delayTime = 60 * 1000,
 time = 0,
 };

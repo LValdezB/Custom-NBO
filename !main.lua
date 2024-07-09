@@ -936,5 +936,26 @@ ui.alerts.onClick = function(widget)
 end
 
 UI.Separator()
+UI.Button("Add Macro", function(newText)
+    UI.MultilineEditorWindow(storage.ingame_Macro or "", {title="Macro Main editor", description="You can add your custom scrupts here"}, function(text)
+      storage.ingame_Macro = text
+      reload()
+    end)
+  end)
+  UI.Separator()
+  UI.Label('Added Macro')
+  for _, scripts in pairs({storage.ingame_Macro}) do
+    if type(scripts) == "string" and scripts:len() > 3 then
+      local status, result = pcall(function()
+        assert(load(scripts, "ingame_maineditor"))()
+      end)
+      if not status then 
+        error("Ingame edior error:\n" .. result)
+      end
+    end
+  end
+  UI.Separator()
+
+UI.Separator()
 UI.Label("Custom by: Valdez")
 UI.Separator()
