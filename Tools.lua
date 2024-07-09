@@ -51,7 +51,7 @@ function BugMap.logic()
   local playerPos = pos();
   local tile;
   for key, value in pairs(availableKeys) do
-    if (modules.corelib.g_keyboard.isKeyPressed(key)) then
+    if (modules.game_console:isChatEnabled() or modules.corelib.g_keyboard.isCtrlPressed(key)) then 
       playerPos.x = playerPos.x + value[1];
       playerPos.y = playerPos.y + value[2];
       tile = g_map.getTile(playerPos);
