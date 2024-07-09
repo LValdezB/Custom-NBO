@@ -943,7 +943,7 @@ UI.Button("Add Macro", function(newText)
     end)
   end)
   UI.Separator()
-  UI.Label('Added Macro')
+  UI.Label('Add Macro')
   for _, scripts in pairs({storage.ingame_Macro}) do
     if type(scripts) == "string" and scripts:len() > 3 then
       local status, result = pcall(function()

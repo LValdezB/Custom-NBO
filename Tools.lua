@@ -1,6 +1,27 @@
 -- tools tab
 setDefaultTab("Tools")
 UI.Separator()
+UI.Button("Add Script", function(newText)
+    UI.MultilineEditorWindow(storage.ingame_hotkeys or "", {title="Hotkeys editor", description="You can add your custom scrupts here"}, function(text)
+      storage.ingame_hotkeys = text
+      reload()
+    end)
+  end)
+  UI.Separator()
+  UI.Label('Added Script')
+
+  for _, scripts in pairs({storage.ingame_hotkeys}) do
+    if type(scripts) == "string" and scripts:len() > 3 then
+      local status, result = pcall(function()
+        assert(load(scripts, "ingame_editor"))()
+      end)
+      if not status then 
+        error("Ingame edior error:\n" .. result)
+      end
+    end
+  end
+  UI.Separator()
+UI.Separator()
 UI.Label("Facility")
 UI.Separator()
 UI.Button("Stop Cave/Target Bot", function()

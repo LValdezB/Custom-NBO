@@ -1,5 +1,24 @@
 setDefaultTab ("HP");
-
+UI.Separator()
+UI.Button("Add HP Macro", function(newText)
+    UI.MultilineEditorWindow(storage.ingame_Macro or "", {title="Macro HP editor", description="You can add your custom scrupts here"}, function(text)
+      storage.ingame_Macro = text
+      reload()
+    end)
+  end)
+  UI.Separator()
+  UI.Label('Added Macro')
+  for _, scripts in pairs({storage.ingame_Macro}) do
+    if type(scripts) == "string" and scripts:len() > 3 then
+      local status, result = pcall(function()
+        assert(load(scripts, "ingame_editor"))()
+      end)
+      if not status then 
+        error("Ingame edior error:\n" .. result)
+      end
+    end
+  end
+  UI.Separator()
 UI.Label("Healing Spells")
 
 if type(storage.healing1) ~= "table" then
