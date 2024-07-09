@@ -21,7 +21,6 @@ UI.Label('Added Script')
   end
 UI.Separator()
 UI.Separator()
-UI.Separator()
 UI.Label("Facility")
 UI.Separator()
 UI.Button("Stop Cave/Target Bot", function()
