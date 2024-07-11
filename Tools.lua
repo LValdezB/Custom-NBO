@@ -34,6 +34,7 @@ UI.Button("Stop Cave/Target Bot", function()
   end)
 UI.Separator()
 local bugMap = {};
+
 bugMap.checkBox = setupUI([[
 CheckBox
   id: checkBox
@@ -65,25 +66,34 @@ bugMap.directions = {
 };
 
 bugMap.macro = macro(1, "Bug Map", function()
-    if (modules.game_console:isChatEnabled() or modules.corelib.g_keyboard.isCtrlPressed()) then return; end
-    local pos = pos();
+    if not bugMap.directions then
+        print("[BUG MAP] Error: Directions table is nil.")
+        return
+    end
+
+    if (modules.game_console:isChatEnabled() or modules.corelib.g_keyboard.isCtrlPressed()) then
+        return
+    end
+
+    local pos = pos()
+
     for key, config in pairs(bugMap.directions) do
         if (bugMap.isKeyPressed(key)) then
             if (storage.bugMapCheck or config.direction) then
                 if (config.direction) then
-                    turn(config.direction);
+                    turn(config.direction)
                 end
-                local tile = g_map.getTile({x = pos.x + config.x, y = pos.y + config.y, z = pos.z});
+                local tile = g_map.getTile({x = pos.x + config.x, y = pos.y + config.y, z = pos.z})
                 if (tile) then
-                    return g_game.use(tile:getTopUseThing());
+                    return g_game.use(tile:getTopUseThing())
                 end
             end
         end
     end
 end)
-   
-   
-addIcon("Bug Map", { item = 10666, text = "Bug Map" }, bugMap.macro )
+
+addIcon("Bug Map", { item = 10666, text = "Bug Map" }, bugMap.macro)
+
 ------
 local windowUI = setupUI([[
 Panel
