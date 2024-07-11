@@ -81,19 +81,9 @@ bugMap.macro = macro(1, "Bug Map", function()
         end
     end
 end)
+   
+   
 addIcon("Bug Map", { item = 10666, text = "Bug Map" }, bugMap.macro )
---
- bugMap = macro(1, "Bug Map Seta", function() 
-  if modules.corelib.g_keyboard.isKeyPressed('Up') then
-   checkPos(0, -5)
-  elseif modules.corelib.g_keyboard.isKeyPressed('Right') then
-   checkPos(5, 0)
-  elseif modules.corelib.g_keyboard.isKeyPressed('Down') then
-   checkPos(0, 5)
-  elseif modules.corelib.g_keyboard.isKeyPressed('Left') then
-   checkPos(-5, 0)
-  end
- end)
 ------
 local windowUI = setupUI([[
 Panel
