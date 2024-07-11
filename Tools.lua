@@ -32,7 +32,6 @@ UI.Button("Stop Cave/Target Bot", function()
       TargetBot.setOn()
    end
   end)
----bUG MAP WASD
 UI.Separator()
 local bugMap = {};
 bugMap.checkBox = setupUI([[
@@ -82,11 +81,8 @@ bugMap.macro = macro(1, "Bug Map", function()
         end
     end
 end)
-   
-   
 addIcon("Bug Map", { item = 10666, text = "Bug Map" }, bugMap.macro )
- 
- 
+--
  bugMap = macro(1, "Bug Map Seta", function() 
   if modules.corelib.g_keyboard.isKeyPressed('Up') then
    checkPos(0, -5)
