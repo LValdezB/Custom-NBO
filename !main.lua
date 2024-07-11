@@ -504,171 +504,115 @@ Panel
 
 ]])
 ui:setId(panelName)
-local alarmsWindow = setupUI([[
-MainWindow
-  !text: tr('Alarms')
-  size: 300 280
-  @onEscape: self:hide()
-
-  BotSwitch
-    id: playerAttack
-    anchors.left: parent.left
-    anchors.right: parent.right
-    anchors.top: parent.top
-    text-align: center
-    text: Player Attack
-    !tooltip: tr('Alerts when attacked by player.')
-
-  BotSwitch
-    id: playerDetected
-    anchors.left: parent.left
-    anchors.right: parent.horizontalCenter
-    anchors.top: prev.bottom
-    margin-top: 4
-    text-align: center
-    text: Player Detected
-    !tooltip: tr('Alerts when a player is detected on screen.')
+local AlarmsWindow = setupUI([[
+AlarmCheckBox < Panel
+  height: 20
+  margin-top: 2
 
   CheckBox
-    id: playerDetectedLogout
-    anchors.top: playerDetected.top
-    anchors.left: parent.horizontalCenter
-    anchors.right: parent.right
-    margin-top: 3
-    margin-left: 4
-    text: Logout
-    !tooltip: tr('Attempts to logout when a player is detected on screen.')
-
-  BotSwitch
-    id: ignoreFriends
-    anchors.left: parent.left
-    anchors.top: playerDetected.bottom
-    anchors.right: parent.right
-    text-align: center
+    id: tick
+    anchors.fill: parent
     margin-top: 4
-    text: Ignore Friends
-    !tooltip: tr('Player detection alerts will ignore friends.')
+    font: verdana-11px-rounded
+    text: Player Attack
+    text-offset: 17 -3
 
-  HorizontalSeparator
-    id: sepPlayer
-    anchors.right: parent.right
-    anchors.left: parent.left
-    anchors.top: prev.bottom
+AlarmCheckBoxAndSpinBox < Panel
+  height: 20
+  margin-top: 2
+
+  CheckBox
+    id: tick
+    anchors.fill: parent
+    anchors.right: next.left
     margin-top: 4
+    font: verdana-11px-rounded
+    text: Player Attack
+    text-offset: 17 -3
 
-  BotSwitch
-    id: creatureDetected
-    anchors.left: parent.left
+  SpinBox
+    id: value
+    anchors.top: parent.top
+    margin-top: 1
+    margin-bottom: 1
+    anchors.bottom: parent.bottom
     anchors.right: parent.right
-    anchors.top: sepPlayer.bottom
-    margin-top: 4
-    text-align: center
-    text: Creature Detected
-    !tooltip: tr('Alerts when a creature is detected on screen.')
+    width: 40
+    minimum: 0
+    maximum: 100
+    step: 1
+    editable: true
+    focusable: true
 
-  BotSwitch
-    id: warnBoss
-    anchors.left: parent.left
-    anchors.top: prev.bottom
-    anchors.right: parent.horizontalCenter
-    text-align: center
-    margin-top: 5
+AlarmCheckBoxAndTextEdit < Panel
+  height: 20
+  margin-top: 2
+
+  CheckBox
+    id: tick
+    anchors.fill: parent
+    anchors.right: next.left
+    margin-top: 4
+    font: verdana-11px-rounded
     text: Creature Name
-    !tooltip: tr('Alerts when a creature/npc with name is detected on screen. \n eg: Benjamin or [boss] would detect a creature with [boss] in name. \n You can add many examples, just separate them by comma.')
+    text-offset: 17 -3
 
   BotTextEdit
-    id: bossName
-    anchors.left: prev.right
-    margin-left: 4
-    anchors.top: prev.top
+    id: text
     anchors.right: parent.right
-    margin-top: 1
-    height: 17
+    anchors.top: parent.top
+    anchors.bottom: parent.bottom
+    width: 150
     font: terminus-10px
-
-  HorizontalSeparator
-    id: sepCreature
-    anchors.right: parent.right
-    anchors.left: parent.left
-    anchors.top: prev.bottom
-    margin-top: 4
-
-  BotSwitch
-    id: healthBelow
-    anchors.left: parent.left
-    anchors.top: prev.bottom
-    anchors.right: parent.horizontalCenter
-    text-align: center
-    margin-top: 4
-    text: Health < 50%
-
-  HorizontalScrollBar
-    id: healthValue
-    anchors.left: parent.horizontalCenter
-    anchors.right: parent.right
-    anchors.top: healthBelow.top
-    margin-left: 3
-    margin-top: 2
-    minimum: 1
-    maximum: 100
-    step: 1
-
-  BotSwitch
-    id: manaBelow
-    anchors.left: parent.left
-    anchors.top: healthBelow.bottom
-    anchors.right: parent.horizontalCenter
-    text-align: center
-    margin-top: 4
-    text: Mana < 50%
-
-  HorizontalScrollBar
-    id: manaValue
-    anchors.left: parent.horizontalCenter
-    anchors.right: parent.right
-    anchors.top: manaBelow.top
-    margin-left: 3
-    margin-top: 2
-    minimum: 1
-    maximum: 100
-    step: 1
-
-  HorizontalSeparator
-    id: sepMessages
-    anchors.right: parent.right
-    anchors.left: parent.left
-    anchors.top: prev.bottom
-    margin-top: 4
-
-  BotSwitch
-    id: privateMessage
-    anchors.left: parent.left
-    anchors.top: prev.bottom
-    anchors.right: parent.right
-    text-align: center
-    margin-top: 4
-    text: Private Message
-    !tooltip: tr('Alerts when recieving a private message.')
-
-  BotSwitch
-    id: warnMessage
-    anchors.left: parent.left
-    anchors.top: prev.bottom
-    anchors.right: parent.horizontalCenter
-    text-align: center
-    margin-top: 5
-    text: Message Alert
-    !tooltip: tr('Alerts when players receive a message that contains given part. \n Eg. event - will trigger alert whenever a message with word event appears. \n You can give many examples, just separate them by comma.')
-
-  BotTextEdit
-    id: messageText
-    anchors.left: prev.right
-    margin-left: 4
-    anchors.top: prev.top
-    anchors.right: parent.right
     margin-top: 1
-    height: 17
-    font: terminus-10px
+    margin-bottom: 1
+
+MainWindow
+  !text: tr('Alarms')
+  size: 330 400
+  padding: 15
+  @onEscape: self:hide()
+
+  FlatPanel
+    id: list
+    anchors.fill: parent
+    anchors.bottom: settingsList.top
+    margin-bottom: 20
+    margin-top: 10
+    layout: verticalBox
+    padding: 10
+    padding-top: 5
+
+  FlatPanel
+    id: settingsList
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: separator.top
+    margin-bottom: 5
+    margin-top: 10
+    padding: 5
+    padding-left: 10
+    layout: 
+      type: verticalBox
+      fit-children: true
+
+  Label
+    anchors.verticalCenter: settingsList.top
+    anchors.left: settingsList.left
+    margin-left: 5
+    width: 200
+    text: Alarms Settings
+    font: verdana-11px-rounded
+    color: #9f5031
+
+  Label
+    anchors.verticalCenter: list.top
+    anchors.left: list.left
+    margin-left: 5
+    width: 200
+    text: Active Alarms
+    font: verdana-11px-rounded
+    color: #9f5031
 
   HorizontalSeparator
     id: separator
@@ -677,6 +621,16 @@ MainWindow
     anchors.bottom: closeButton.top
     margin-bottom: 8
 
+  ResizeBorder
+    id: bottomResizeBorder
+    anchors.fill: separator
+    height: 3
+    minimum: 260
+    maximum: 600
+    margin-left: 3
+    margin-right: 3
+    background: #ffffff88  
+
   Button
     id: closeButton
     !text: tr('Close')
@@ -684,256 +638,206 @@ MainWindow
     anchors.right: parent.right
     anchors.bottom: parent.bottom
     size: 45 21
-    margin-top: 15
-    margin-right: 5  
+    margin-right: 5
+    @onClick: self:getParent():hide() 
 ]], g_ui.getRootWidget())
 
 if not storage[panelName] then
-  storage[panelName] = {
-    enabled = false,
-    playerAttack = false,
-    playerDetected = false,
-    playerDetectedLogout = false,
-    creatureDetected = false,
-    healthBelow = false,
-    healthValue = 40,
-    manaBelow = false,
-    manaValue = 50,
-    privateMessage = false,
-    ignoreFriends = true,
-    warnBoss = false,
-    bossName = '[B]'
-}
-end
-
-
-
-local config = storage[panelName]
-
-ui.title:setOn(config.enabled)
-ui.title.onClick = function(widget)
-config.enabled = not config.enabled
-widget:setOn(config.enabled)
-end
-
--- new var's validation
-config.messageText = config.messageText or ""
-config.bossName = config.bossName or ""
-
-rootWidget = g_ui.getRootWidget()
-if rootWidget then
-  alarmsWindow:hide()
-
-  alarmsWindow.closeButton.onClick = function(widget)
-    alarmsWindow:hide()
+    storage[panelName] = {}
   end
-
-  alarmsWindow.playerAttack:setOn(config.playerAttack)
-  alarmsWindow.playerAttack.onClick = function(widget)
-    config.playerAttack = not config.playerAttack
-    widget:setOn(config.playerAttack)
+  
+  local config = storage[panelName]
+  
+  ui.title:setOn(config.enabled)
+  ui.title.onClick = function(widget)
+    config.enabled = not config.enabled
+    widget:setOn(config.enabled)
   end
-
-  alarmsWindow.playerDetected:setOn(config.playerDetected)
-  alarmsWindow.playerDetected.onClick = function(widget)
-    config.playerDetected = not config.playerDetected
-    widget:setOn(config.playerDetected)
+  AlarmsWindow:hide()
+  
+  ui.alerts.onClick = function()
+    AlarmsWindow:show()
+    AlarmsWindow:raise()
+    AlarmsWindow:focus()
   end
-
-  alarmsWindow.playerDetectedLogout:setChecked(config.playerDetectedLogout)
-  alarmsWindow.playerDetectedLogout.onClick = function(widget)
-    config.playerDetectedLogout = not config.playerDetectedLogout
-    widget:setChecked(config.playerDetectedLogout)
+  
+  local widgets = 
+  {
+    "AlarmCheckBox", 
+    "AlarmCheckBoxAndSpinBox", 
+    "AlarmCheckBoxAndTextEdit"
+  }
+  
+  local parents = 
+  {
+    AlarmsWindow.list, 
+    AlarmsWindow.settingsList
+  }
+  
+  
+  -- type
+  addAlarm = function(id, title, defaultValue, alarmType, parent, tooltip)
+    local widget = UI.createWidget(widgets[alarmType], parents[parent])
+    widget:setId(id)
+  
+    if type(config[id]) ~= 'table' then
+      config[id] = {}
+    end
+  
+    widget.tick:setText(title)
+    widget.tick:setChecked(config[id].enabled)
+    widget.tick:setTooltip(tooltip)
+    widget.tick.onClick = function()
+      config[id].enabled = not config[id].enabled
+      widget.tick:setChecked(config[id].enabled)
+    end
+  
+    if alarmType > 1 and type(config[id].value) == 'nil' then
+      config[id].value = defaultValue
+    end
+  
+    if alarmType == 2 then
+      widget.value:setValue(config[id].value)
+      widget.value.onValueChange = function(widget, value)
+        config[id].value = value
+      end
+    elseif alarmType == 3 then
+      widget.text:setText(config[id].value)
+      widget.text.onTextChange = function(widget, newText)
+        config[id].value = newText
+      end
+    end
+  
   end
-
-  alarmsWindow.creatureDetected:setOn(config.creatureDetected)
-  alarmsWindow.creatureDetected.onClick = function(widget)
-    config.creatureDetected = not config.creatureDetected
-    widget:setOn(config.creatureDetected)
+  
+  -- settings
+  addAlarm("ignoreFriends", "Ignore Friends", true, 1, 2)
+  addAlarm("flashClient", "Flash Client", true, 1, 2)
+  
+  -- alarm list
+  addAlarm("damageTaken", "Damage Taken", false, 1, 1)
+  addAlarm("lowHealth", "Low Health", 20, 2, 1)
+  addAlarm("lowMana", "Low Mana", 20, 2, 1)
+  addAlarm("playerAttack", "Player Attack", false, 1, 1)
+  
+  UI.Separator(AlarmsWindow.list)
+  
+  addAlarm("privateMsg", "Private Message", false, 1, 1)
+  addAlarm("defaultMsg", "Default Message", false, 1, 1)
+  addAlarm("customMessage", "Custom Message:", "", 3, 1, "You can add text, that if found in any incoming message will trigger alert.\n You can add many, just separate them by comma.")
+  
+  UI.Separator(AlarmsWindow.list)
+  
+  addAlarm("creatureDetected", "Creature Detected", false, 1, 1)
+  addAlarm("playerDetected", "Player Detected", false, 1, 1)
+  addAlarm("creatureName", "Creature Name:", "", 3, 1, "You can add a name or part of it, that if found in any visible creature name will trigger alert.\nYou can add many, just separate them by comma.")
+  
+  
+  local lastCall = now
+  local function alarm(file, windowText)
+    if now - lastCall < 2000 then return end -- 2s delay
+    lastCall = now
+  
+    if not g_resources.fileExists(file) then
+      file = "/sounds/alarm.ogg"
+      lastCall = now + 4000 -- alarm.ogg length is 6s
+    end
+  
+    
+    if modules.game_bot.g_app.getOs() == "windows" and config.flashClient.enabled then
+      g_window.flash()
+    end
+    g_window.setTitle(player:getName() .. " - " .. windowText)
+    playSound(file)
   end
-
-  alarmsWindow.healthBelow:setOn(config.healthBelow)
-  alarmsWindow.healthBelow.onClick = function(widget)
-    config.healthBelow = not config.healthBelow
-    widget:setOn(config.healthBelow)
-  end
-
-  alarmsWindow.healthValue.onValueChange = function(scroll, value)
-    config.healthValue = value
-    alarmsWindow.healthBelow:setText("Health < " .. config.healthValue .. "%")  
-  end
-  alarmsWindow.healthValue:setValue(config.healthValue)
-
-  alarmsWindow.manaBelow:setOn(config.manaBelow)
-  alarmsWindow.manaBelow.onClick = function(widget)
-    config.manaBelow = not config.manaBelow
-    widget:setOn(config.manaBelow)
-  end
-
-  alarmsWindow.manaValue.onValueChange = function(scroll, value)
-    config.manaValue = value
-    alarmsWindow.manaBelow:setText("Mana < " .. config.manaValue .. "%")  
-  end
-  alarmsWindow.manaValue:setValue(config.manaValue)
-
-  alarmsWindow.privateMessage:setOn(config.privateMessage)
-  alarmsWindow.privateMessage.onClick = function(widget)
-    config.privateMessage = not config.privateMessage
-    widget:setOn(config.privateMessage)
-  end
-
-  alarmsWindow.ignoreFriends:setOn(config.ignoreFriends)
-  alarmsWindow.ignoreFriends.onClick = function(widget)
-    config.ignoreFriends = not config.ignoreFriends
-    widget:setOn(config.ignoreFriends)
-  end
-
-  alarmsWindow.warnBoss:setOn(config.warnBoss)
-  alarmsWindow.warnBoss.onClick = function(widget)
-    config.warnBoss = not config.warnBoss
-    widget:setOn(config.warnBoss)
-  end
-
-  alarmsWindow.bossName:setText(config.bossName)
-  alarmsWindow.bossName.onTextChange = function(widget, text)
-    config.bossName = text
-  end
-
-  alarmsWindow.warnMessage:setOn(config.warnMessage)
-  alarmsWindow.warnMessage.onClick = function(widget)
-    config.warnMessage = not config.warnMessage
-    widget:setOn(config.warnMessage)
-  end
-
-  alarmsWindow.messageText:setText(config.messageText)
-  alarmsWindow.messageText.onTextChange = function(widget, text)
-    config.messageText = text
-  end
-
-  local pName = player:getName()
+  
+  -- damage taken & custom message
   onTextMessage(function(mode, text)
-    if config.enabled and config.playerAttack and mode == 16 and string.match(text, "hitpoints due to an attack") and not string.match(text, "hitpoints due to an attack by a ") then
-      playSound("/sounds/Player_Attack.ogg")
-      g_window.setTitle(pName .. " - Player Attacks!")
-      return
+    if not config.enabled then return end
+    if mode == 22 and config.damageTaken.enabled then
+      return alarm('/sounds/magnum.ogg', "Damage Received!")
     end
-
-    if config.warnMessage and config.messageText:len() > 0 then
-      text = text:lower()
-      local parts = string.split(config.messageText, ",")
-      for i=1,#parts do
-        local part = parts[i]
-        part = part:trim()
-        part = part:lower()
-
-        if text:find(part) then
-          delay(1500)
-          playSound(g_resources.fileExists("/sounds/Special_Message.ogg") and "/sounds/Special_Message.ogg" or "/sounds/Private_Message.ogg")
-          g_window.setTitle(pName .. " - Special Message Detected: "..part)
-          return
+  
+    if config.customMessage.enabled then
+      local alertText = config.customMessage.value
+      if alertText:len() > 0 then
+        text = text:lower()
+        local parts = string.split(alertText, ",")
+  
+        for i=1,#parts do
+          local part = parts[i]
+          part = part:trim()
+          part = part:lower()
+  
+          if text:find(part) then
+            return alarm('/sounds/magnum.ogg', "Special Message!")
+          end
         end
       end
     end
   end)
-
-  macro(100, function()
-    if not config.enabled then
-      return
-    end
-    local specs = getSpectators()
-    if config.playerDetected then
-      for _, spec in ipairs(specs) do
-        if spec:isPlayer() and spec:getName() ~= name() then
-          local specPos = spec:getPosition()
-          if (not config.ignoreFriends or not isFriend(spec)) and math.max(math.abs(posx()-specPos.x), math.abs(posy()-specPos.y)) <= 8 then
-            playSound("/sounds/Player_Detected.ogg")
-            delay(1500)
-            g_window.setTitle(pName .. " - Player Detected! "..spec:getName())
-            if config.playerDetectedLogout then
-              modules.game_interface.tryLogout(false)
-            end
-            return
-          end
-        end
-      end
-    end
-
-    if config.creatureDetected then
-      for _, spec in ipairs(specs) do
-        if not spec:isPlayer() then
-          local specPos = spec:getPosition()
-          if math.max(math.abs(posx()-specPos.x), math.abs(posy()-specPos.y)) <= 8 then
-            playSound("/sounds/Creature_Detected.ogg")
-            delay(1500)
-            g_window.setTitle(pName .. " - Creature Detected! "..spec:getName())
-            return
-          end
-        end
-      end
-    end
-
-    if config.warnBoss then
-      -- experimental, but since we check only names i think the best way would be to combine all spec's names into one string and then check it to avoid multiple loops
-      if config.bossName:len() > 0 then
-        local names = string.split(config.bossName, ",")
-        local combinedString = ""
-        for _, spec in ipairs(specs) do
-          local specPos = spec:getPosition()
-          if math.max(math.abs(posx() - specPos.x), math.abs(posy() - specPos.y)) <= 8 then
-            local name = spec:getName():lower()
-            -- add special sign between names to avoid unwanted combining mistakes
-            combinedString = combinedString .."&"..name
-          end
-        end
-        for i=1,#names do
-          local name = names[i]
-          name = name:trim()
-          name = name:lower()
-
-          if combinedString:find(name) then
-            playSound(g_resources.fileExists("/sounds/Special_Creature.ogg") and "/sounds/Special_Creature.ogg" or "/sounds/Creature_Detected.ogg")
-            delay(1500)
-            g_window.setTitle(pName .. " - Special Creature Detected: "..name)
-            return
-          end
-
-        end
-      end
-    end
-
-    if config.healthBelow then
-      if hppercent() <= config.healthValue then
-        playSound("/sounds/Low_Health.ogg")
-        delay(1500)
-        g_window.setTitle(pName .. " - Low Health! only: "..hppercent().."%")
-        return
-      end
-    end
-
-    if config.manaBelow then
-      if manapercent() <= config.manaValue then
-        playSound("/sounds/Low_Mana.ogg")
-        delay(1500)
-        g_window.setTitle(pName .. " - Low Mana! only: "..manapercent().."%")
-        return
-      end
-    end
-  end)
-
+  
+  -- default & private message
   onTalk(function(name, level, mode, text, channelId, pos)
-    if mode == 4 and config.enabled and config.privateMessage then
-      playSound("/sounds/Private_Message.ogg")
-      g_window.setTitle(pName .. " - Private Message from: " .. name)
-      return
+    if not config.enabled then return end
+    if name == player:getName() then return end -- ignore self messages
+    if config.ignoreFriends.enabled and isFriend(name) then return end -- ignore friends if enabled
+  
+    if mode == 1 and config.defaultMsg.enabled then
+      return alarm("/sounds/magnum.ogg", "Default Message!")
+    end
+  
+    if mode == 4 and config.privateMsg.enabled then
+      return alarm("/sounds/Private_Message.ogg", "Private Message!")
     end
   end)
-end
-
-ui.alerts.onClick = function(widget)
-  alarmsWindow:show()
-  alarmsWindow:raise()
-  alarmsWindow:focus()
-end
+  
+  -- health & mana
+  macro(100, function() 
+    if not config.enabled then return end
+    if config.lowHealth.enabled then
+      if hppercent() < config.lowHealth.value then
+        return alarm("/sounds/Low_Health.ogg", "Low Health!")
+      end
+    end
+  
+    if config.lowMana.enabled then
+      if hppercent() < config.lowMana.value then
+        return alarm("/sounds/Low_Mana.ogg", "Low Mana!")
+      end
+    end
+  
+    for i, spec in ipairs(getSpectators()) do
+      if not spec:isLocalPlayer() and not (config.ignoreFriends.enabled and isFriend(spec)) then
+  
+        if config.creatureDetected.enabled then
+          return alarm("/sounds/magnum.ogg", "Creature Detected!")
+        end
+  
+        if spec:isPlayer() then 
+          if spec:isTimedSquareVisible() and config.playerAttack.enabled then
+            return alarm("/sounds/Player_Attack.ogg", "Player Attack!")
+          end
+          if config.playerDetected.enabled then
+            return alarm("/sounds/Player_Detected.ogg", "Player Detected!")
+          end
+        end
+  
+        if config.creatureName.enabled then
+          local name = spec:getName():lower()
+          local fragments = string.split(config.creatureName.value, ",")
+          
+          for i=1,#fragments do
+            local frag = fragments[i]:trim():lower()
+  
+            if name:lower():find(frag) then
+              return alarm("/sounds/alarm.ogg", "Special Creature Detected!")
+            end
+          end
+        end
+      end
+    end
+  end)
 
 UI.Separator()
 UI.Button("Add Macro", function(newText)
