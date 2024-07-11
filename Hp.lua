@@ -304,7 +304,7 @@ MainWindow
 
 if not storage[panelName] then
   storage[panelName] = {
-    minActivePercent = 80,
+    minPercent = 80,
   }
 end
 local config = storage[panelName]
@@ -326,11 +326,11 @@ local config = storage[panelName]
     KawaListWindow:hide()
   end
   local updatePercentText = function()
-    KawaListWindow.Percent:setText("Activates Below " .. config.minActivePercent .. "% hp")  
+    KawaListWindow.Percent:setText("Activates Below " .. config.minPercent .. "% hp")  
   end
-  KawaListWindow.minActivePercent:setValue(config.minActivePercent)
-  KawaListWindow.minActivePercent.onValueChange = function(scroll, value)
-    config.minActivePercent = value
+  KawaListWindow.minPercent:setValue(config.minPercent)
+  KawaListWindow.minPercent.onValueChange = function(scroll, value)
+    config.minPercent = value
     updatePercentText()
   end
   updatePercentText()
@@ -342,7 +342,7 @@ local config = storage[panelName]
 end
 macro(100, function() 
   if (not storage.titlekawaEnabled) then
-  elseif (hppercent() <= config.minActivePercent) then
+  elseif (hppercent() <= config.minPercent) then
     say(config.kawaSpell) 
   end
 end)
