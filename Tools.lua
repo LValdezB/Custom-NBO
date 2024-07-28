@@ -369,87 +369,52 @@ local windowUI = setupUI([[
 MainWindow
   id: main
   !text: tr('Teleport')
-  size: 200 570
+  size: 230 310
   scrollable: true
-
+    
   ScrollablePanel
     id: TpList
     anchors.top: parent.top
     anchors.left: parent.left
-    size: 190 550
+    size: 190 225
     vertical-scrollbar: mainScroll
 
     Button
-      !text: tr('Konoha Gakure')
+      !text: tr('Konoha')
       anchors.top: parent.top
       anchors.left: parent.left
       width: 165
 
     Button
-      !text: tr('Suna Gakure')
+      !text: tr('Suna')
       anchors.top: prev.bottom
       anchors.left: parent.left
       margin-top: 5
       width: 165
 
     Button
-      !text: tr('Vila Takumi')
+      !text: tr('Yu no Kuni')
       anchors.top: prev.bottom
       anchors.left: parent.left
       margin-top: 5
       width: 165
 
     Button
-      !text: tr('Monte Myoboku')
+      !text: tr('An no kuni')
       anchors.top: prev.bottom
       anchors.left: parent.left
       margin-top: 5
       width: 165
 
     Button
-      !text: tr('Forest')
+      !text: tr('Yuki no Kuni')
       anchors.top: prev.bottom
       anchors.left: parent.left
       margin-top: 5
       width: 165
 
     Button
-      !text: tr('Amegakure no Sato')
-      anchors.top: prev.bottom
-      anchors.left: parent.left
-      margin-top: 5
-      width: 165
-
-    Button
-      !text: tr('Suna Camp')
-      anchors.top: prev.bottom
-      anchors.left: parent.left
-      margin-top: 5
-      width: 165
-
-    Button
-      !text: tr('Iwagakure Island')
-      anchors.top: prev.bottom
-      anchors.left: parent.left
-      margin-top: 5
-      width: 165
-
-    Button
-      !text: tr('Yukigakure')
-      anchors.top: prev.bottom
-      anchors.left: parent.left
-      margin-top: 5
-      width: 165
-
-    Button
-      !text: tr('Iwagakure')
-      anchors.top: prev.bottom
-      anchors.left: parent.left
-      margin-top: 5
-      width: 165
-
-    Button
-      !text: tr('Vale do Fim')
+      !text: tr('Kushiro Island')
       anchors.top: prev.bottom
       anchors.left: parent.left
       margin-top: 5
@@ -463,39 +428,19 @@ MainWindow
       width: 165
 
     Button
-      !text: tr('Tsuki no Shima')
+      !text: tr('Jinchuurikis Island')
       anchors.top: prev.bottom
       anchors.left: parent.left
       margin-top: 5
       width: 165
 
-    Button
-      !text: tr('Templo do Fogo')
-      anchors.top: prev.bottom
-      anchors.left: parent.left
-      margin-top: 5
-      width: 165
-
-    Button
-      !text: tr('Kodai no Shima')
-      anchors.top: prev.bottom
-      anchors.left: parent.left
-      margin-top: 5
-      width: 165
-
-    Button
-      !text: tr('Ilha da Lua')
-      anchors.top: prev.bottom
-      anchors.left: parent.left
-      margin-top: 5
-      width: 165
-
-    Button
-      !text: tr('Ilha Genbu')
-      anchors.top: prev.bottom
-      anchors.left: parent.left
-      margin-top: 5
-      width: 165
+  VerticalScrollBar  
+    id: mainScroll
+    anchors.top: parent.top
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    step: 48
+    pixels-scroll: true
     
   Button
     id: closeButton
@@ -506,6 +451,7 @@ MainWindow
     size: 45 21
     margin-top: 15
     margin-right: 15
+
 ]], g_ui.getRootWidget());
 windowUI:hide();
 
@@ -547,7 +493,7 @@ onTalk(function(name, level, mode, text, channelId, pos)
   if (TpMinoru.macro.isOff()) then return; end
   if (name ~= 'Minoru') then return; end              
   if (mode ~= 51) then return; end
-  if (text:find('Eu posso te levar para')) then 
+  if (text:find('Welcome on board, Sir ' .. player:getName() .. '. Do you want to {travel}')) then 
       TpMinoru.show();
   else
       TpMinoru.close();
