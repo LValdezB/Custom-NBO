@@ -1170,7 +1170,7 @@ end);
 
 ---Lure---
 
-local MIN_RANGE = 12;
+local MIN_RANGE = 7;
 macro(100, 'Lure', function()
     if (CaveBot.isOff()) then return; end
     local creaturesAround = getMonstersInRange(pos(), MIN_RANGE);
