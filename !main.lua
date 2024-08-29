@@ -815,7 +815,7 @@ if not storage[panelName] then
         end
   
         if spec:isPlayer() then 
-          if spec:isTimedSquareVisible() and config.playerAttack.enabled then
+          if config.playerAttack.enabled then
             return alarm("/sounds/Player_Attack.ogg", "Player Attack!")
           end
           if config.playerDetected.enabled then
